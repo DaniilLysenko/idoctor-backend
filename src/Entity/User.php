@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
 class User
 {
@@ -47,6 +49,23 @@ class User
      * @Assert\NotBlank
      */
     private $sex;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Email
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min = 6,
+     *     max = 20,
+     *     minMessage = "Your password must be at least {{ limit }} characters long",
+     *     maxMessage = "Your password cannot be longer than {{ limit }} characters")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -134,6 +153,30 @@ class User
     public function setSex(string $sex): self
     {
         $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }

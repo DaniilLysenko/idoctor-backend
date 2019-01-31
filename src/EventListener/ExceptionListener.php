@@ -1,0 +1,28 @@
+<?php
+
+namespace App\EventListener;
+
+use Mcfedr\JsonFormBundle\Exception\JsonHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+
+class ExceptionListener
+{
+    public function onKernelException(GetResponseForExceptionEvent $event)
+    {
+        $exception = $event->getException();
+        if ($exception instanceof JsonHttpException) {
+            $errorData = [
+                'error' => [
+                    'code' => $exception->getStatusCode(),
+                    'message' => $exception->getMessage()
+                ]
+            ];
+            if (($data = $exception->getData())) {
+                $errorData['error']['lol'] = $data;
+            }
+            $response = new JsonResponse($errorData);
+            $event->setResponse($response);
+        }
+    }
+}
