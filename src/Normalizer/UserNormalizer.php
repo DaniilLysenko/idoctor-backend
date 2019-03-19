@@ -17,7 +17,8 @@ class UserNormalizer implements NormalizerInterface
     {
         $response = [
             'id' => $object->getId(),
-            'apiKey' => $object->getApiKey()
+            'apiKey' => $object->getApiKey(),
+            'role' => $object->getRole()
         ];
 
         return $response;

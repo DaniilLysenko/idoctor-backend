@@ -14,6 +14,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User implements UserInterface
 {
+    use CreateUpdateTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -74,15 +76,15 @@ class User implements UserInterface
     private $apiKey;
 
     /**
-     * @ORM\Column(type="array")
-     */
-    private $roles = [];
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Address")
      * @ORM\JoinColumn(nullable=false)
      */
     private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $role;
 
     /**
      * User constructor.
@@ -194,14 +196,19 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRole(): ?string
     {
-        return $this->roles;
+        return $this->role;
     }
 
-    public function setRoles(array $roles): self
+    public function getRoles()
     {
-        $this->roles = $roles;
+        return [$this->getRole()];
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
