@@ -22,6 +22,8 @@ class AuthController extends AbstractController
      */
     public function login(Request $request, UserService $userService)
     {
-        return $userService->login($request->get('email'), $request->get('password'));
+        $params = json_decode($request->getContent());
+
+        return $userService->login($params->email, $params->password);
     }
 }
