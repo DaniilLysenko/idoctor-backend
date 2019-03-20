@@ -19,6 +19,7 @@ class AnnouncementNormalizer implements NormalizerInterface
             'id' => $object->getId(),
             'title' => $object->getTitle(),
             'description' => $object->getDescription(),
+            'date' => $object->getDate(),
             'image' => $object->getImage()
         ];
 

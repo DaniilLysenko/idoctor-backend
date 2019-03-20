@@ -3,6 +3,8 @@ security:
     encoders:
         App\Entity\User:
             algorithm: bcrypt
+        App\Entity\Doctor:
+            algorithm: bcrypt
 
     providers:
         in_memory: { memory: ~ }

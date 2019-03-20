@@ -3,22 +3,20 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DoctorRepository")
  * @UniqueEntity(
  *     fields={"email"},
  *     errorPath="email",
  *     message="User with this email already exists"
  * )
  */
-class User implements UserInterface
+class Doctor implements UserInterface
 {
-    const ROLE_USER = 'ROLE_USER';
+    const ROLE_DOCTOR = 'ROLE_DOCTOR';
 
     use CreateUpdateTrait;
 
@@ -31,48 +29,26 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
     private $patronName;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\NotBlank
-     */
-    private $birthday;
-
-    /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     */
-    private $sex;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min = 6,
-     *     max = 20,
-     *     minMessage = "Your password must be at least {{ limit }} characters long",
-     *     maxMessage = "Your password cannot be longer than {{ limit }} characters")
      */
     private $password;
 
@@ -82,29 +58,18 @@ class User implements UserInterface
     private $apiKey;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $address;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $role;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Hospital", inversedBy="users")
+     * @ORM\Column(type="string", length=255)
      */
-    private $hospital;
+    private $profession;
 
-    /**
-     * User constructor.
-     * @throws \Exception
-     */
     public function __construct()
     {
-        $this->apiKey = Uuid::uuid4();
-        $this->role = self::ROLE_USER;
+        $this->role = self::ROLE_DOCTOR;
     }
 
     public function getId(): ?int
@@ -144,30 +109,6 @@ class User implements UserInterface
     public function setPatronName(string $patronName): self
     {
         $this->patronName = $patronName;
-
-        return $this;
-    }
-
-    public function getBirthday(): ?\DateTimeInterface
-    {
-        return $this->birthday;
-    }
-
-    public function setBirthday(\DateTimeInterface $birthday): self
-    {
-        $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    public function getSex(): ?string
-    {
-        return $this->sex;
-    }
-
-    public function setSex(string $sex): self
-    {
-        $this->sex = $sex;
 
         return $this;
     }
@@ -213,11 +154,6 @@ class User implements UserInterface
         return $this->role;
     }
 
-    public function getRoles()
-    {
-        return [$this->getRole()];
-    }
-
     public function setRole(string $role): self
     {
         $this->role = $role;
@@ -225,16 +161,21 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAddress(): ?Address
+    public function getProfession(): ?string
     {
-        return $this->address;
+        return $this->profession;
     }
 
-    public function setAddress(?Address $address): self
+    public function setProfession(string $profession): self
     {
-        $this->address = $address;
+        $this->profession = $profession;
 
         return $this;
+    }
+
+    public function getRoles()
+    {
+        return [$this->getRole()];
     }
 
     public function getSalt(){}
@@ -242,16 +183,4 @@ class User implements UserInterface
     public function getUsername(){}
 
     public function eraseCredentials(){}
-
-    public function getHospital(): ?Hospital
-    {
-        return $this->hospital;
-    }
-
-    public function setHospital(?Hospital $hospital): self
-    {
-        $this->hospital = $hospital;
-
-        return $this;
-    }
 }
