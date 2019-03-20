@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AdvertisementRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\AnnouncementRepository")
  */
-class Advertisement
+class Announcement
 {
     use CreateUpdateTrait;
 
@@ -29,9 +29,19 @@ class Advertisement
     private $description;
 
     /**
+     * @ORM\Column(type="string", length=500)
+     */
+    private $image;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $date;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $active = true;
 
     public function getId(): ?int
     {
@@ -62,6 +72,18 @@ class Advertisement
         return $this;
     }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
@@ -70,6 +92,18 @@ class Advertisement
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
