@@ -61,7 +61,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Password can't be blank")
      * @Assert\Length(
      *     min = 6,
      *     max = 20,
