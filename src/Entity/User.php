@@ -31,31 +31,31 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Firstname can't be blank")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Lastname can't be blank")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Patron name can't be blank")
      */
     private $patronName;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Assert\NotBlank
+     * @ORM\Column(type="date")
+     * @Assert\NotBlank(message="Birthday can't be blank")
      */
     private $birthday;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email
+     * @Assert\Email(message="Email is invalid")
      */
     private $email;
 
@@ -87,16 +87,18 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=500)
+     * @Assert\NotBlank(message="Street can't be blank")
      */
     private $street;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Street number can't be blank")
      */
     private $streetNumber;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $apartmentNumber;
 
