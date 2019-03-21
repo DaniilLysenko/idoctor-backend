@@ -55,12 +55,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
-     */
-    private $sex;
-
-    /**
-     * @ORM\Column(type="string", length=255)
      * @Assert\Email
      */
     private $email;
@@ -82,12 +76,6 @@ class User implements UserInterface
     private $apiKey;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $address;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $role;
@@ -96,6 +84,21 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Hospital", inversedBy="users")
      */
     private $hospital;
+
+    /**
+     * @ORM\Column(type="string", length=500)
+     */
+    private $street;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $streetNumber;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $apartmentNumber;
 
     /**
      * User constructor.
@@ -160,18 +163,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSex(): ?string
-    {
-        return $this->sex;
-    }
-
-    public function setSex(string $sex): self
-    {
-        $this->sex = $sex;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -225,18 +216,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAddress(): ?Address
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?Address $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
     public function getSalt(){}
 
     public function getUsername(){}
@@ -251,6 +230,42 @@ class User implements UserInterface
     public function setHospital(?Hospital $hospital): self
     {
         $this->hospital = $hospital;
+
+        return $this;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(string $street): self
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    public function getStreetNumber(): ?string
+    {
+        return $this->streetNumber;
+    }
+
+    public function setStreetNumber(string $streetNumber): self
+    {
+        $this->streetNumber = $streetNumber;
+
+        return $this;
+    }
+
+    public function getApartmentNumber(): ?string
+    {
+        return $this->apartmentNumber;
+    }
+
+    public function setApartmentNumber(string $apartmentNumber): self
+    {
+        $this->apartmentNumber = $apartmentNumber;
 
         return $this;
     }
