@@ -9,13 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class UserService
+class UserService extends DefaultService
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
-
     /**
      * @var RegistryInterface
      */
@@ -34,8 +29,8 @@ class UserService
      */
     public function __construct(RegistryInterface $doctrine, UserPasswordEncoderInterface $passwordEncoder, NormalizerInterface $normalizer)
     {
+        parent::__construct($passwordEncoder);
         $this->doctrine = $doctrine;
-        $this->passwordEncoder = $passwordEncoder;
         $this->normalizer = $normalizer;
     }
 
@@ -59,15 +54,5 @@ class UserService
         return new JsonResponse($this->normalizer->normalize([
             'user' => $user
         ]), Response::HTTP_OK);
-    }
-
-    /**
-     * @param $password
-     * @param User $user
-     * @return bool
-     */
-    private function checkPassword($password, User $user)
-    {
-        return $this->passwordEncoder->isPasswordValid($user, $password);
     }
 }

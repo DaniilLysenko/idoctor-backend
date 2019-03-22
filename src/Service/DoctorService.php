@@ -2,19 +2,17 @@
 namespace App\Service;
 
 use App\Entity\Doctor;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DoctorService
+class DoctorService extends DefaultService
 {
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private $passwordEncoder;
-
     /**
      * @var RegistryInterface
      */
@@ -26,16 +24,35 @@ class DoctorService
     private $normalizer;
 
     /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
      * UserService constructor.
      * @param RegistryInterface $doctrine
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param NormalizerInterface $normalizer
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
      */
-    public function __construct(RegistryInterface $doctrine, UserPasswordEncoderInterface $passwordEncoder, NormalizerInterface $normalizer)
+    public function __construct(
+        RegistryInterface $doctrine,
+        UserPasswordEncoderInterface $passwordEncoder,
+        NormalizerInterface $normalizer,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator)
     {
+        parent::__construct($passwordEncoder);
         $this->doctrine = $doctrine;
-        $this->passwordEncoder = $passwordEncoder;
         $this->normalizer = $normalizer;
+        $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
     /**
@@ -61,12 +78,23 @@ class DoctorService
     }
 
     /**
-     * @param $password
-     * @param Doctor $doctor
-     * @return bool
+     * @param $content
+     * @return JsonResponse
      */
-    private function checkPassword($password, Doctor $doctor)
+    public function addPatient($content)
     {
-        return $this->passwordEncoder->isPasswordValid($doctor, $password);
+        $user = $this->serializer->deserialize(
+            $content,
+            User::class,
+            'json'
+        );
+
+        $errors = $this->validator->validate($user);
+
+        if (count($errors)) {
+            return new JsonResponse(['errors' => $this->getAllErrors($errors)['errors']], Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(['message' => 'OK'], Response::HTTP_OK);
     }
 }

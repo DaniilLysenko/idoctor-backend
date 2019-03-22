@@ -2,12 +2,28 @@
 
 namespace App\Normalizer;
 
+use App\Entity\Hospital;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    /**
+     * @var RegistryInterface
+     */
+    private $doctrine;
+
+    /**
+     * UserNormalizer constructor.
+     * @param RegistryInterface $doctrine
+     */
+    public function __construct(RegistryInterface $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * @param User $object
      * @param null $format
@@ -37,10 +53,47 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $user = new User();
 
+        if (isset($data['firstName'])) {
+            $user->setFirstName($data['firstName']);
+        }
+
+        if (isset($data['lastName'])) {
+            $user->setLastName($data['lastName']);
+        }
+
+        if (isset($data['patronName'])) {
+            $user->setPatronName($data['patronName']);
+        }
+
         if (isset($data['email'])) {
             $user->setEmail($data['email']);
         }
-        
+
+        if (isset($data['password'])) {
+            $user->setPassword($data['password']);
+        }
+
+        if (isset($data['street'])) {
+            $user->setStreet($data['street']);
+        }
+
+        if (isset($data['streetNumber'])) {
+            $user->setStreetNumber($data['streetNumber']);
+        }
+
+        if (isset($data['apartmentNumber']) && $data['apartmentNumber'] !== '') {
+            $user->setApartmentNumber($data['apartmentNumber']);
+        }
+
+        if (isset($data['hospital'])) {
+            if (isset($data['hospital']['id'])) {
+                $hospital = $this->doctrine->getRepository(Hospital::class)->find($data['hospital']['id']);
+
+                if ($hospital) {
+                    $user->setHospital($hospital);
+                }
+            }
+        }
 
         return $user;
     }

@@ -2,14 +2,11 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\User;
+use App\Service\DoctorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/api/doctor")
@@ -19,22 +16,11 @@ class DoctorController extends AbstractController
     /**
      * @Route("/add-patient", name="api_doctor_add_patient", methods={"POST"})
      * @param Request $request
-     * @param ValidatorInterface $validator
-     * @param SerializerInterface $serializer
+     * @param DoctorService $doctorService
      * @return JsonResponse
      */
-    public function addPatient(Request $request, ValidatorInterface $validator, SerializerInterface $serializer)
+    public function addPatient(Request $request, DoctorService $doctorService)
     {
-        $content = $request->getContent();
-
-//        TODO: add denormaliztion to user
-
-        $user = $serializer->deserialize(
-            $request->getContent(),
-            User::class,
-            'json'
-        );
-
-        return new JsonResponse(['message' => 'OK'], Response::HTTP_OK);
+        return $doctorService->addPatient($request->getContent());
     }
 }
