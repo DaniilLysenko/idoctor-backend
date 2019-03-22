@@ -49,4 +49,9 @@ class DefaultService
     {
         return $this->passwordEncoder->isPasswordValid($entity, $password);
     }
+
+    protected function encodePassword(UserInterface $user, $password)
+    {
+        return $this->passwordEncoder->encodePassword($user, $password);
+    }
 }

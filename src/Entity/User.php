@@ -48,8 +48,7 @@ class User implements UserInterface
     private $patronName;
 
     /**
-     * @ORM\Column(type="date")
-     * @Assert\NotBlank(message="Birthday can't be blank")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $birthday;
 

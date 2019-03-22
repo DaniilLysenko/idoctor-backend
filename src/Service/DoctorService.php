@@ -83,6 +83,7 @@ class DoctorService extends DefaultService
      */
     public function addPatient($content)
     {
+        /** @var User $user */
         $user = $this->serializer->deserialize(
             $content,
             User::class,
@@ -94,6 +95,12 @@ class DoctorService extends DefaultService
         if (count($errors)) {
             return new JsonResponse(['errors' => $this->getAllErrors($errors)['errors']], Response::HTTP_BAD_REQUEST);
         }
+
+        $user->setPassword($this->encodePassword($user, $user->getPassword()));
+
+        $this->doctrine->getManager()->persist($user);
+
+        $this->doctrine->getManager()->flush();
 
         return new JsonResponse(['message' => 'OK'], Response::HTTP_OK);
     }
