@@ -16,6 +16,7 @@ class HospitalController extends AbstractController
 {
     /**
      * @Route("/hospitals", name="api_hospitals", methods={"GET"})
+     * @param NormalizerInterface $normalizer
      * @return JsonResponse
      */
     public function hospitals(NormalizerInterface $normalizer)
