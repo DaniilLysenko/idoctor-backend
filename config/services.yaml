@@ -14,3 +14,6 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    api_key_authenticator:
+        class: App\Security\TestAuthenticator
+        public: true

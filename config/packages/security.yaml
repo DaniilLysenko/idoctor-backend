@@ -1,5 +1,4 @@
 security:
-
     encoders:
         App\Entity\User:
             algorithm: bcrypt
@@ -7,14 +6,29 @@ security:
             algorithm: bcrypt
 
     providers:
-        in_memory: { memory: ~ }
+        api_doctor_provider:
+            entity:
+                class: App\Entity\Doctor
+                property: apiKey
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        api_doctor:
+            pattern: ^/api/doctor
+            anonymous: false
+            stateless: true
+            provider: api_doctor_provider
+
+            guard:
+                authenticators:
+                    - api_key_authenticator
+
         main:
-            anonymous: true
+            anonymous: ~
 
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/api/doctor, roles: ROLE_DOCTOR }
         # - { path: ^/profile, roles: ROLE_USER }

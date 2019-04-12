@@ -104,4 +104,11 @@ class DoctorService extends DefaultService
 
         return new JsonResponse(['message' => 'OK'], Response::HTTP_OK);
     }
+
+    public function getDoctor($apiKey)
+    {
+        $user = $this->doctrine->getRepository(Doctor::class)->findOneBy(['apiKey' => $apiKey]);
+
+        return $user;
+    }
 }

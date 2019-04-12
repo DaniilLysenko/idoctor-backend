@@ -23,4 +23,12 @@ class DoctorController extends AbstractController
     {
         return $doctorService->addPatient($request->getContent());
     }
+
+    /**
+     * @Route("/test", name="testt", methods={"GET"})
+     */
+    public function gettt()
+    {
+        return new JsonResponse(['sadfd' => 'dsafsdf']);
+    }
 }

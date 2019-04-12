@@ -55,4 +55,11 @@ class UserService extends DefaultService
             'user' => $user
         ]), Response::HTTP_OK);
     }
+
+    public function getUser($apiKey)
+    {
+        $user = $this->doctrine->getRepository(User::class)->findOneBy(['apiKey' => $apiKey]);
+
+        return $user;
+    }
 }

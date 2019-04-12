@@ -67,6 +67,11 @@ class Doctor implements UserInterface
      */
     private $profession;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Hospital", inversedBy="doctors")
+     */
+    private $hospital;
+
     public function __construct()
     {
         $this->role = self::ROLE_DOCTOR;
@@ -176,6 +181,18 @@ class Doctor implements UserInterface
     public function getRoles()
     {
         return [$this->getRole()];
+    }
+
+    public function getHospital(): ?Hospital
+    {
+        return $this->hospital;
+    }
+
+    public function setHospital(?Hospital $hospital): self
+    {
+        $this->hospital = $hospital;
+
+        return $this;
     }
 
     public function getSalt(){}
