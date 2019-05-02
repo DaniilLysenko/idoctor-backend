@@ -16,15 +16,15 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        api_doctor:
-            pattern: ^/api/doctor
-            anonymous: false
-            stateless: true
-            provider: api_doctor_provider
+#        api_doctor:
+#            pattern: ^/api/doctor
+#            anonymous: false
+#            stateless: true
+#            provider: api_doctor_provider
 
-            guard:
-                authenticators:
-                    - api_key_authenticator
+#            guard:
+#                authenticators:
+#                    - api_key_authenticator
 
         main:
             anonymous: ~

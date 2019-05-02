@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -103,7 +104,7 @@ class User implements UserInterface
 
     /**
      * User constructor.
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
@@ -217,12 +218,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSalt(){}
-
-    public function getUsername(){}
-
-    public function eraseCredentials(){}
-
     public function getHospital(): ?Hospital
     {
         return $this->hospital;
@@ -270,4 +265,10 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getSalt(){}
+
+    public function getUsername(){}
+
+    public function eraseCredentials(){}
 }
