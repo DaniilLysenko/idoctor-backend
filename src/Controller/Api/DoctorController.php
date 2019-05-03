@@ -23,4 +23,17 @@ class DoctorController extends AbstractController
     {
         return $doctorService->addPatient($request->getContent());
     }
+
+    /**
+     * @Route("/all-patients/{page}", requirements={"page"="\d+"}, name="api_all_patients", methods={"GET"})
+     * @param DoctorService $doctorService
+     * @param $page
+     * @return JsonResponse
+     */
+    public function allPatients(DoctorService $doctorService, $page)
+    {
+        $patients = $doctorService->getAllPatients($page);
+
+        return new JsonResponse();
+    }
 }

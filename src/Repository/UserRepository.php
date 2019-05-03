@@ -12,4 +12,11 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function getAllPatients()
+    {
+        return $this
+            ->createQueryBuilder('u')
+            ->getQuery();
+    }
 }

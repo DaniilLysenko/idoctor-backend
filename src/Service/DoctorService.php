@@ -3,6 +3,8 @@ namespace App\Service;
 
 use App\Entity\Doctor;
 use App\Entity\User;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +35,8 @@ class DoctorService extends DefaultService
      */
     private $validator;
 
+    private $paginator;
+
     /**
      * UserService constructor.
      * @param RegistryInterface $doctrine
@@ -40,19 +44,22 @@ class DoctorService extends DefaultService
      * @param NormalizerInterface $normalizer
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
+     * @param PaginatorInterface $paginator
      */
     public function __construct(
         RegistryInterface $doctrine,
         UserPasswordEncoderInterface $passwordEncoder,
         NormalizerInterface $normalizer,
         SerializerInterface $serializer,
-        ValidatorInterface $validator)
+        ValidatorInterface $validator,
+        PaginatorInterface $paginator)
     {
         parent::__construct($passwordEncoder);
         $this->doctrine = $doctrine;
         $this->normalizer = $normalizer;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -105,10 +112,33 @@ class DoctorService extends DefaultService
         return new JsonResponse(['message' => 'OK'], Response::HTTP_OK);
     }
 
+    /**
+     * @param $apiKey
+     *
+     * @return Doctor|object|null
+     */
     public function getDoctor($apiKey)
     {
         $user = $this->doctrine->getRepository(Doctor::class)->findOneBy(['apiKey' => $apiKey]);
 
         return $user;
+    }
+
+    /**
+     * @param $page
+     *
+     * @return PaginationInterface
+     */
+    public function getAllPatients($page)
+    {
+        $users = $this->doctrine->getRepository(User::class)->getAllPatients();
+
+        $pagination = $this->paginator->paginate(
+            $users,
+            $page,
+            20
+        );
+
+        return $pagination;
     }
 }
