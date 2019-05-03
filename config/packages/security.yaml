@@ -10,21 +10,35 @@ security:
             entity:
                 class: App\Entity\Doctor
                 property: apiKey
+        api_user_provider:
+            entity:
+                class: App\Entity\User
+                property: apiKey
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-#        api_doctor:
-#            pattern: ^/api/doctor
-#            anonymous: false
-#            stateless: true
-#            provider: api_doctor_provider
+        api_doctor:
+            pattern: ^/api/doctor
+            anonymous: false
+            stateless: true
+            provider: api_doctor_provider
 
-#            guard:
-#                authenticators:
-#                    - api_key_authenticator
+            guard:
+                authenticators:
+                    - api_doctor_authenticator
+
+        api_user:
+            pattern: ^/api/user
+            anonymous: false
+            stateless: true
+            provider: api_user_provider
+
+            guard:
+                authenticators:
+                    - api_user_authenticator
 
         main:
             anonymous: ~

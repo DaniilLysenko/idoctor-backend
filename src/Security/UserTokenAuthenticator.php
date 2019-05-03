@@ -31,6 +31,6 @@ class UserTokenAuthenticator extends BaseAuthenticator
     {
         $apiToken = $credentials['token'];
 
-        $this->userService->getUser($apiToken);
+        return $this->userService->getUser($apiToken);
     }
 }

@@ -30,11 +30,7 @@ abstract class BaseAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        if (!$token = $request->headers->get(self::API_KEY_NAME)) {
-            return null;
-        }
-
-        return ['token' => $token];
+        return ['token' => $request->headers->get(self::API_KEY_NAME) ? $request->headers->get(self::API_KEY_NAME) : ''];
     }
 
     /**
@@ -82,6 +78,6 @@ abstract class BaseAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        return true;
+        return $request->headers->get(self::API_KEY_NAME);
     }
 }

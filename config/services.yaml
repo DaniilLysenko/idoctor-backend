@@ -14,6 +14,10 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    api_key_authenticator:
-        class: App\Security\TestAuthenticator
+    api_doctor_authenticator:
+        class: App\Security\DoctorTokenAuthenticator
+        public: true
+
+    api_user_authenticator:
+        class: App\Security\UserTokenAuthenticator
         public: true

@@ -31,6 +31,6 @@ class DoctorTokenAuthenticator extends BaseAuthenticator
     {
         $apiToken = $credentials['token'];
 
-        $this->doctorService->getDoctor($apiToken);
+        return $this->doctorService->getDoctor($apiToken);
     }
 }
