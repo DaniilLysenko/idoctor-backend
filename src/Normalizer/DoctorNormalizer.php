@@ -16,10 +16,13 @@ class DoctorNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         $response = [
-            'id' => $object->getId(),
-            'apiKey' => $object->getApiKey(),
-            'role' => $object->getRole()
+            'id' => $object->getId()
         ];
+
+        if (isset($context['login'])) {
+            $response['apiKey'] = $object->getApiKey();
+            $response['role'] = $object->getRole();
+        }
 
         return $response;
     }

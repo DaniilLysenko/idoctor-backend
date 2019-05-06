@@ -35,6 +35,9 @@ class DoctorService extends DefaultService
      */
     private $validator;
 
+    /**
+     * @var PaginatorInterface
+     */
     private $paginator;
 
     /**
@@ -81,7 +84,7 @@ class DoctorService extends DefaultService
 
         return new JsonResponse($this->normalizer->normalize([
             'user' => $doctor
-        ]), Response::HTTP_OK);
+        ], 'json', ['login' => true]), Response::HTTP_OK);
     }
 
     /**

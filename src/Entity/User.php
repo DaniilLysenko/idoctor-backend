@@ -108,6 +108,11 @@ class User implements UserInterface
     private $doctor;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\MedicalCard", mappedBy="patient", cascade={"persist", "remove"})
+     */
+    private $medicalCard;
+
+    /**
      * User constructor.
      * @throws Exception
      */
@@ -288,4 +293,22 @@ class User implements UserInterface
     public function getUsername(){}
 
     public function eraseCredentials(){}
+
+    public function getMedicalCard(): ?MedicalCard
+    {
+        return $this->medicalCard;
+    }
+
+    public function setMedicalCard(?MedicalCard $medicalCard): self
+    {
+        $this->medicalCard = $medicalCard;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newPatient = $medicalCard === null ? null : $this;
+        if ($newPatient !== $medicalCard->getPatient()) {
+            $medicalCard->setPatient($newPatient);
+        }
+
+        return $this;
+    }
 }

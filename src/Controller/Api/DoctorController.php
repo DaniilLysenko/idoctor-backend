@@ -17,6 +17,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class DoctorController extends AbstractController
 {
     /**
+     * @Route("/", name="api_doctor_info", methods={"GET"})
+     *
+     * @param NormalizerInterface $normalizer
+     *
+     * @return JsonResponse
+     */
+    public function doctorInfo(NormalizerInterface $normalizer)
+    {
+        return new JsonResponse($normalizer->normalize([
+            'user' => $this->getUser()
+        ]), Response::HTTP_OK);
+    }
+
+    /**
      * @Route("/save-patient", name="api_doctor_add_patient", methods={"POST"})
      * @param Request $request
      * @param DoctorService $doctorService

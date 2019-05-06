@@ -79,10 +79,16 @@ class Doctor implements UserInterface
      */
     private $patients;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MedicalCardRecord", mappedBy="doctor")
+     */
+    private $medicalCardRecords;
+
     public function __construct()
     {
         $this->role = self::ROLE_DOCTOR;
         $this->patients = new ArrayCollection();
+        $this->medicalCardRecords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -239,4 +245,35 @@ class Doctor implements UserInterface
     public function getUsername(){}
 
     public function eraseCredentials(){}
+
+    /**
+     * @return Collection|MedicalCardRecord[]
+     */
+    public function getMedicalCardRecords(): Collection
+    {
+        return $this->medicalCardRecords;
+    }
+
+    public function addMedicalCardRecord(MedicalCardRecord $medicalCardRecord): self
+    {
+        if (!$this->medicalCardRecords->contains($medicalCardRecord)) {
+            $this->medicalCardRecords[] = $medicalCardRecord;
+            $medicalCardRecord->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedicalCardRecord(MedicalCardRecord $medicalCardRecord): self
+    {
+        if ($this->medicalCardRecords->contains($medicalCardRecord)) {
+            $this->medicalCardRecords->removeElement($medicalCardRecord);
+            // set the owning side to null (unless already changed)
+            if ($medicalCardRecord->getDoctor() === $this) {
+                $medicalCardRecord->setDoctor(null);
+            }
+        }
+
+        return $this;
+    }
 }
