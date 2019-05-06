@@ -88,7 +88,7 @@ class DoctorService extends DefaultService
      * @param $content
      * @return JsonResponse
      */
-    public function addPatient($content)
+    public function savePatient($content)
     {
         /** @var User $user */
         $user = $this->serializer->deserialize(
@@ -152,5 +152,27 @@ class DoctorService extends DefaultService
         $patients = $this->doctrine->getRepository(User::class)->search($query);
 
         return $patients;
+    }
+
+    /**
+     * @param User $user
+     * @param Doctor $doctor
+     *
+     * @return JsonResponse
+     */
+    public function addPatient(User $user, Doctor $doctor)
+    {
+        if (!$user) {
+            return new JsonResponse([
+                'error' => 'User not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $doctor->addPatient($user);
+        $this->doctrine->getManager()->flush();
+
+        return new JsonResponse([
+            'message' => 'Patient added successfully'
+        ], Response::HTTP_OK);
     }
 }

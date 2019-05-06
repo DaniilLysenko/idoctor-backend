@@ -103,6 +103,11 @@ class User implements UserInterface
     private $apartmentNumber;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Doctor", inversedBy="patients")
+     */
+    private $doctor;
+
+    /**
      * User constructor.
      * @throws Exception
      */
@@ -262,6 +267,18 @@ class User implements UserInterface
     public function setApartmentNumber(string $apartmentNumber): self
     {
         $this->apartmentNumber = $apartmentNumber;
+
+        return $this;
+    }
+
+    public function getDoctor(): ?Doctor
+    {
+        return $this->doctor;
+    }
+
+    public function setDoctor(?Doctor $doctor): self
+    {
+        $this->doctor = $doctor;
 
         return $this;
     }

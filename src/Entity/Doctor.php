@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -72,9 +74,15 @@ class Doctor implements UserInterface
      */
     private $hospital;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="doctor")
+     */
+    private $patients;
+
     public function __construct()
     {
         $this->role = self::ROLE_DOCTOR;
+        $this->patients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +199,37 @@ class Doctor implements UserInterface
     public function setHospital(?Hospital $hospital): self
     {
         $this->hospital = $hospital;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(User $user): self
+    {
+        if (!$this->patients->contains($user)) {
+            $this->patients[] = $user;
+            $user->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(User $user): self
+    {
+        if ($this->patients->contains($user)) {
+            $this->patients->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getDoctor() === $this) {
+                $user->setDoctor(null);
+            }
+        }
 
         return $this;
     }
