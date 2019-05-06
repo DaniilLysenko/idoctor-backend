@@ -35,10 +35,20 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
 //        TODO add separate context for login and simple fetching
 
         $response = [
-            'id' => $object->getId(),
-            'apiKey' => $object->getApiKey(),
-            'role' => $object->getRole()
+            'id' => $object->getId()
         ];
+
+        if (isset($context['login'])) {
+            $response['apiKey'] = $object->getApiKey();
+            $response['role'] = $object->getRole();
+        }
+
+        if (isset($context['patients'])) {
+            $response['firstName'] = $object->getFirstName();
+            $response['lastName'] = $object->getLastName();
+            $response['patronName'] = $object->getPatronName();
+            $response['email'] = $object->getEmail();
+        }
 
         return $response;
     }

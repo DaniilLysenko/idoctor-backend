@@ -53,7 +53,7 @@ class UserService extends DefaultService
 
         return new JsonResponse($this->normalizer->normalize([
             'user' => $user
-        ]), Response::HTTP_OK);
+        ], 'json', ['login' => true]), Response::HTTP_OK);
     }
 
     public function getUser($apiKey)

@@ -19,4 +19,17 @@ class UserRepository extends ServiceEntityRepository
             ->createQueryBuilder('u')
             ->getQuery();
     }
+
+    public function search($query)
+    {
+        return $this
+            ->createQueryBuilder('u')
+            ->where('u.firstName LIKE :query')
+            ->orWhere('u.lastName LIKE :query')
+            ->orWhere('u.patronName LIKE :query')
+            ->orWhere('u.email LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

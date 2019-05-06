@@ -141,4 +141,16 @@ class DoctorService extends DefaultService
 
         return $pagination;
     }
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    public function patientsSearch($query)
+    {
+        $patients = $this->doctrine->getRepository(User::class)->search($query);
+
+        return $patients;
+    }
 }
