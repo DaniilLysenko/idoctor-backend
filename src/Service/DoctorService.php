@@ -139,7 +139,7 @@ class DoctorService extends DefaultService
         $pagination = $this->paginator->paginate(
             $users,
             $page,
-            20
+            30
         );
 
         return $pagination;

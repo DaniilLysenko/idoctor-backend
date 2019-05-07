@@ -17,6 +17,6 @@ nelmio_cors:
             max_age: 3600
         '^(/doctor/login|/login)':
             allow_origin: ['*']
-            allow_headers: ['^http://localhost:[0-9]+']
+            allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS']
             max_age: 3600
