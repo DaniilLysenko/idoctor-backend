@@ -113,6 +113,11 @@ class User implements UserInterface
     private $medicalCard;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $fullName;
+
+    /**
      * User constructor.
      * @throws Exception
      */
@@ -120,6 +125,7 @@ class User implements UserInterface
     {
         $this->apiKey = Uuid::uuid4();
         $this->role = self::ROLE_USER;
+        $this->fullName = $this->getLastName() . ' ' . $this->getFirstName() . ' ' . $this->getPatronName();
     }
 
     public function getId(): ?int
@@ -310,5 +316,10 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
     }
 }

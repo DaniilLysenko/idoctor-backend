@@ -32,8 +32,6 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-//        TODO add separate context for login and simple fetching
-
         $response = [
             'id' => $object->getId()
         ];
