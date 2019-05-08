@@ -24,6 +24,12 @@ class DoctorNormalizer implements NormalizerInterface
             $response['role'] = $object->getRole();
         }
 
+        if (isset($context['patientFetch'])) {
+            $response['firstName'] = $object->getFirstName();
+            $response['lastName'] = $object->getLastName();
+            $response['patronName'] = $object->getPatronName();
+        }
+
         return $response;
     }
 

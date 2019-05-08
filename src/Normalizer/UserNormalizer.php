@@ -16,12 +16,19 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
     private $doctrine;
 
     /**
+     * @var DoctorNormalizer
+     */
+    private $doctorNormalizer;
+
+    /**
      * UserNormalizer constructor.
      * @param RegistryInterface $doctrine
+     * @param DoctorNormalizer $doctorNormalizer
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(RegistryInterface $doctrine, DoctorNormalizer $doctorNormalizer)
     {
         $this->doctrine = $doctrine;
+        $this->doctorNormalizer = $doctorNormalizer;
     }
 
     /**
@@ -46,6 +53,11 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
             $response['lastName'] = $object->getLastName();
             $response['patronName'] = $object->getPatronName();
             $response['email'] = $object->getEmail();
+            $response['doctor'] = $object->getDoctor() === null ? null : $this->doctorNormalizer->normalize(
+                $object->getDoctor(),
+                'json',
+                ['patientFetch' => true]
+            );
         }
 
         return $response;
