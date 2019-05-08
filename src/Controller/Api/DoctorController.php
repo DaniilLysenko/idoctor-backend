@@ -87,4 +87,19 @@ class DoctorController extends AbstractController
     {
         return $doctorService->addPatient($patient, $this->getUser());
     }
+
+    /**
+     * @Route("/patients/{id}", requirements={"page"="\d+"}, name="api_single_patient", methods={"GET"})
+     *
+     * @param User $patient
+     * @param NormalizerInterface $normalizer
+     *
+     * @return JsonResponse
+     */
+    public function singlePatient(User $patient, NormalizerInterface $normalizer)
+    {
+        return new JsonResponse($normalizer->normalize([
+            'patient' => $patient
+        ], 'json', ['patients' => true]));
+    }
 }
